@@ -1,0 +1,23 @@
+﻿@model dynamic
+<spa-view name="startscan">
+
+    <h1>Aloituslukema</h1>
+    <p>
+        Lisää kaikille kävelijöille (<!--ko text: allAttendees().length --><!--/ko--> kpl) aloituslukema 
+        lähtöpaikalle <!--ko text: checkpoints[0].name --><!--/ko-->. 
+    </p>
+
+    <form data-bind="submit: add.bind($root)">
+        <div class="form-group">
+            <label for="time">Lähtöaika muodossa tt.mm</label>
+            <input type="text" class="form-control" style="width: 100px;" placeholder="tt.mm" required="required" name="time" id="time"
+                   title="Anna aika muodossa tt.mm" pattern="\d{1,2}[.:]\d{1,2}" data-bind="value: time" />
+        </div>
+
+        <p>
+            <button type="submit" class="btn btn-primary" style="margin-right: 10px;">Lisää</button>
+            <a class="btn btn-default" href="/">Peru</a>
+        </p>
+    </form>
+    
+</spa-view>

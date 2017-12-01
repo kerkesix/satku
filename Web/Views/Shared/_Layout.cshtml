@@ -1,0 +1,65 @@
+﻿@using System.Security.Principal
+@using Web.Extensions
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment HostingEnvironment
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>@ViewBag.Title</title>
+    @Html.Partial("HeadMetaAndFavicons")
+
+    <environment include="Development">
+        @Bundler.Unpack(HostingEnvironment.ContentRootPath, "wwwroot/build/site.min.css")
+    </environment>
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/build/site.min.css" asp-append-version="true" />
+    </environment>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    @Html.Partial("_Analytics")
+</head>
+<body>
+    @Html.Partial("~/Views/Navigation/_Navigation.cshtml")
+    
+    <div id="maincontent"></div>
+
+    @RenderBody()
+
+    <environment include="Development">
+        <script src="~/build/jquery.js"></script>
+        <script src="~/build/knockout.js"></script>
+
+        @Bundler.Unpack(HostingEnvironment.ContentRootPath, "wwwroot/build/site.min.js")
+        @if (User.Identity.IsAuthenticated)
+        {
+        @Bundler.Unpack(HostingEnvironment.ContentRootPath, "wwwroot/build/contributor.min.js")      
+        }     
+    </environment>
+
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/build/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"
+                asp-fallback-src="~/build/knockout.min.js"
+                asp-fallback-test="(ko)"
+                crossorigin="anonymous"></script>
+        </script>
+
+        <script src="~/build/site.min.js" asp-append-version="true"></script>
+        @if (User.Identity.IsAuthenticated)
+        {
+        <script src="~/build/contributor.min.js" asp-append-version="true"></script>
+        }    
+    </environment>
+
+    <script src="~/js/sammyRun.js" asp-append-version="true"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>@ViewBag.Title</title>
+
+    @Html.Partial("HeadMetaAndFavicons")
+    
+    <link rel="stylesheet" href="~/css/bootstrap-cyborg.css" />
+    @Html.Partial("_Analytics")
+</head>
+<body>
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    @RenderSection("ScriptContent", false)
+</body>
+</html>

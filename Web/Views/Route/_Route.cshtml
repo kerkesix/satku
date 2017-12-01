@@ -1,0 +1,4 @@
+﻿@model dynamic
+<spa-view name="route" layout-class="w-100 h-100">
+    <div id="route-map" data-bind="map: { lat: 60.553507, lon: 24.20358962, zoom: 10, zoomToRoute: true, geoJson: '/api/' + Ksx.Routes.currentHappening + '/route' } "></div>
+</spa-view>

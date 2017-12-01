@@ -1,0 +1,22 @@
+﻿#navigation {
+    background-color: #060606;
+    border-bottom: 1px solid #888;
+}
+
+#summaryrows .card-header {
+    color:rgba(255, 255, 255, 0.5);
+}
+#summaryrows .card-header a {
+    text-decoration: none;
+}
+
+#attendee-list .active a, #attendee-list .active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+/* Fix a bug in Cyborg bootstrap theme */
+.card-block a.btn {
+    color: white;
+} 
+

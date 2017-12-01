@@ -1,0 +1,198 @@
+﻿@model dynamic
+<spa-view name="report">
+    <div class="row">
+
+        <article id="graphs" class="col-12 col-md-5 mt-0" data-bind="summaryGraph: $root"></article>
+
+        <article id="report-text" class="col-12 col-md-6 mt-5" data-bind="visible: loaded">
+            <div id="summaryrows" data-bind="foreach: checkpoints" role="tablist">
+                <div class="card">
+                    <div class="card-header row ml-0 mr-0" role="tab">
+                        <h6 class="col-4 col-xl -6 mb-0 pl-0">
+                            <a data-toggle="collapse" data-parent="#summaryrows" data-bind="attr: { href: '#' + id }" aria-expanded="false">
+                                <!--ko text: name --><!--/ko-->
+                                <i class="fa fa-double-angle-right" data-bind="visible: checkpointType === 2"></i>
+                            </a>
+                        </h6>
+                        <span class="col-5 col-xl-4 text-right" data-bind="text: status"></span> 
+                        <span class="col-3 col-xl-2" data-bind="text: Math.round(distanceFromStart) + ' km'"></span>
+                    </div>
+                    <div data-bind="attr: { id: id }" class="collapse out">
+                        <div class="card-body card-block">
+                            <a class="geo" href="#" title="Avaa kartalla" data-bind="modal: '#popupMap'">
+                                <i class="fa fa-map-marker"></i>
+                                <span class="latitude" data-bind="text: latitude"></span>,
+                                <span class="longitude" data-bind="text: longitude"></span>
+                            </a>
+                            <div data-bind="visible: checkpointType === 2">Tämä on läpiluentapiste, ei laatikkohuoltoa.</div>
+                            <p data-bind="visible: avgTime() > 0">
+                                Keskimääräinen huoltoaika: <strong data-bind="durationText: avgTime"></strong>
+                            </p>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <p>
+                                <a data-bind="visible: $index() === 0 && !visits().length, attr: { href: Ksx.Routes.url('readings', 'start') }" 
+                                class="btn btn-primary" role="button">Lisää aloituslukema kaikille</a>
+                                <a class="btn btn-primary" data-bind="visible: waitingFor().length, modal: '#addScanIn', onOpen: 'addManualScanInModalOpen'" role="button"><i class="fa fa-plus"></i> Lue käsin sisään</a>
+                            </p>
+                            }
+                            <table class="table table-sm" data-bind="if: visits().length && (inside() || waitingFor().length)">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sisään</th>
+                                        <th>Ulos</th>
+                                        <th>Kävelijä</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="template: { name: 'visit-template', foreach: visits }"></tbody>
+                            </table>
+                                
+                            <div data-bind="if: waitingFor().length, visible: waitingFor().length">
+                                <h6>Saapuvaksi odotetaan</h6>
+                                <ul data-bind="template: { name: 'waitingfor-template', foreach: waitingFor }" class="list-unstyled"></ul>
+                            </div>
+                                
+                            <div class="mt-1" data-bind="if: visits().length && (!inside() & !waitingFor().length)">
+                                <a data-bind="modal: '#popupAllCheckpoints'" href="#">
+                                    <i class="fa fa-folder-open fa-inverse"></i> Kaikki leimanneet, avaa lista
+                                </a>
+                            </div>
+                                
+                            <div data-bind="if: quitters().length, visible: quitters().length">
+                                <h6>Keskeyttäneet</h6>
+                                <ul data-bind="template: { name: 'quitter-template', foreach: quitters }" class="list-unstyled"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <div data-bind="visible: !loaded()">
+            <h4><i class="fa fa-spinner"></i> Rakennetaan ajantasaista tilannekuvaa...</h4>
+        </div>
+    </div>
+</spa-view>
+
+<div id="popupMap" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 data-bind="text: name"></h4>
+                <span>
+                    <i class="fa fa-map-marker fa-2x"></i>
+                    <strong data-bind="text: latitude + ', ' + longitude"></strong>
+                </span>
+            </div>
+
+            <div class="modal-body">
+                <div id="popupMapContents" data-bind="map: { lat: latitude, lon: longitude, zoom: 16, geoJson: '/api/' + Ksx.Routes.currentHappening + '/route' } "></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popupAllCheckpoints" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 data-bind="text: name"></h4>
+            </div>
+            
+            <table class="modal-body table table-sm">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Sisään</th>
+                        <th>Ulos</th>
+                        <th>Kävelijä</th>
+                    </tr>
+                </thead>
+                @*Knockout does not handle cleaning after foreach binding,
+                therefore mark with own cleanup tag*@
+                <tbody data-cleanup="true" data-bind="template: { name: 'visit-template', foreach: visits }"></tbody>
+            </table>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="visit-template">
+    <tr>
+        <td><i class="fa fa-ambulance" data-bind="visible: quit"></i></td>
+        <td data-bind="dateText: dateTimeIn"></td>
+        <td>
+            <!--ko dateText: dateTimeOut, dateFormat: dateTimeIn() ? '' : 'full' --><!--/ko-->
+            <span data-bind="visible: quit() && !dateTimeOut()"> keskeytti huollossa</span>
+            <span data-bind="visible: quit() && dateTimeOut()"> ...keskeytti</span>
+            <span data-bind="visible: !quit() && dateTimeIn() && !dateTimeOut()"> huoltaa</span>
+        </td>
+        <td>
+            @if (User.Identity.IsAuthenticated)
+            {            
+            <div class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <!--ko text: $root.attendeeName(id)--><!--/ko-->
+                    <b class="fa fa-pencil-square-o" />
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    @*TODO: Allow removal only if this is the last user visit (e.g. not visited next checkpoint yet)*@
+                    
+                    <li class="dropdown-item" role="presentation" data-bind="visible: !dateTimeOut() && !quit()">
+                        <a role="menuitem" tabindex="-1" data-bind="modal: '#addScanOut', onOpen: 'addManualScanOutModalOpen'">
+                            <i class="fa fa-fw fa-plus"></i> Lue käsin ulos
+                        </a>
+                    </li>
+                    <li class="dropdown-item" role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-bind="modal: '#changescantime', onOpen: 'changeScanTimeModalOpen'">
+                            <i class="fa fa-fw fa-clock-o"></i> Siirrä lukema-aikaa
+                        </a>
+                    </li>
+
+                    <li class="dropdown-item" role="presentation" data-bind="visible: !quit()">
+                        <a role="menuitem" tabindex="-1" data-bind="modal: '#removeScan'">
+                            <i class="fa fa-fw fa-trash"></i> Poista lukema
+                        </a>
+                    </li>
+                    <li class="dropdown-item" role="presentation" data-bind="visible: !quit()">
+                        <a role="menuitem" tabindex="-1" href="#" data-bind="modal: '#addQuit', onOpen: 'addQuitModalOpen'">
+                            <i class="fa fa-fw fa-ambulance"></i> Keskeytä kävely
+                        </a>
+                    </li>
+                    <li class="dropdown-item" role="presentation" data-bind="visible: quit()">
+                        <a role="menuitem" tabindex="-1" data-bind="modal: '#removeQuit'">
+                            <i class="fa fa-fw fa-trash"></i> Poista keskeytys
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            } 
+            else {
+            <a data-bind="attr: { href: Ksx.Routes.url('attendees', null, id) }, text: $root.attendeeName(id)"></a>
+            }
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="quitter-template">
+    <li>
+        <i class="fa fa-ambulance"></i>
+        <!--ko dateText: time --><!--/ko-->
+        <!--ko text: $root.attendeeName(id) + ' ' + (walkedSinceLast ? ' - ' + walkedSinceLast + ' km huoltopisteeltä' : '')-->
+        <!--/ko-->
+    </li>
+</script>
+
+<script type="text/html" id="waitingfor-template">
+    <li>~<!--ko dateText: expectedAt --><!--/ko-->
+        <!--ko text: $root.attendeeName(id) -->
+        <!--/ko-->
+    </li>
+</script>

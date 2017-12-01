@@ -1,0 +1,122 @@
+﻿@model dynamic
+<spa-view name="people">
+
+    <button class="btn btn-default pull-right" data-bind="click: refreshData.bind($root)"><i class="fa fa-refresh"></i></button>
+    
+    <h1>Henkilöt</h1>
+    
+    <span class="help-block">
+        Henkilöt pysyvät samana yli satkujen. Henkilöstä tulee kävelijä kun henkilö sidotaan tapahtumaan. Poistaminen on mahdollista, 
+        jos henkilöä ei ole sidottu yhteenkään tapahtumaan. 
+    </span>
+    
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" data-bind="checked: onlyCurrent" /> Näytä vain <!--ko text: Ksx.Routes.currentHappening --><!--/ko-->
+        </label>
+    </div>
+      
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width:160px;">Nimi</th>
+
+                <th>Näyttönimi</th>
+                <th>Sähköposti</th>
+                <th>Id</th>
+                @*<th>Twitter</th>*@
+                <th>Puhelin</th>
+                <th>Kävellyt</th>
+                <th>Lisätietoja</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: people">
+            <tr data-bind="attr: { id: id }, visible: !$root.onlyCurrent() || ($root.onlyCurrent() && isLinkedTo(Ksx.Routes.currentHappening))">
+                <td>
+                    <a href="#"
+                       title="Muokkaa käyttäjää"
+                       data-bind="modal: '#popupEditPerson'">
+                        <i class="fa fa-edit"></i>
+                        <span data-bind="text: lastname"></span>
+                    </a>&nbsp;<!--ko text: firstname--><!--/ko-->
+                </td>
+                <td data-bind="text: displayName"></td>
+                <td data-bind="text: email"></td>
+                @*<td data-bind="text: twitter"></td>*@
+                <td data-bind="text: id"></td>
+                <td data-bind="text: phone"></td>
+                <td data-bind="text: happeningsCompleted().length + '/' + happeningsAttended().length"></td>
+                <td data-bind="text: info"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+</spa-view>
+
+<div id="popupEditPerson" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 data-bind="text: lastname() + ', ' + firstname()"></h4>
+            </div>
+
+            <div class="modal-body">
+                <form role="form" data-bind="with: $root.initializeEditor($data), submit: $root.updateInformation.bind($root)">
+                    <div class="form-group">
+                        <label for="lastname">Sukunimi</label>
+                        <input type="text" id="lastname" class="form-control" required maxlength="30" title="Sukunimi on pakollinen" data-bind="value: lastname" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstname">Etunimi</label>
+                        <input type="text" id="firstname" class="form-control" required maxlength="30" title="Etunimi on pakollinen" data-bind="value: firstname" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayname">Näyttönimi</label>
+                        <input type="text" id="displayname" class="form-control" required maxlength="50" title="Näyttönimi on pakollinen." data-bind="value: displayName" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Sähköposti</label>
+                        <input type="email" id="email" class="form-control" required title="Sähköposti on pakollinen." data-bind="value: email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Puhelin</label>
+                        <input type="tel" id="phone" class="form-control" required title="Puhelinnumero on pakollinen" data-bind="value: phone" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="twitter">Twitter-tunnus</label>
+                        <input type="text" id="twitter" class="form-control" title="Anna Twitter-tunnus, esim. &#64;jarmababa" pattern="^&#64;([A-Za-z0-9_]{1,15})$" data-bind="value: twitter" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nfcid">NFC-tunnus</label>
+                        <input type="text" id="nfcid" class="form-control" title="Lue tähän kenttään NFC-tagi" data-bind="value: nfcId" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="info">Lisätietoja</label>
+                        <textarea id="info" class="form-control" data-bind="value: info"></textarea>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-ok"></i> Tallenna
+                        </button>
+                        <button type="button" class="btn" data-dismiss="modal">Peru</button>
+                        <button class="btn btn-xs pull-right" data-bind="click: $root.deletePerson.bind($root), visible: happeningsAttended().length === 0">
+                            <i class="fa fa-remove"></i>
+                            Poista käyttäjä
+                        </button>
+                    </div>
+
+                </form>    
+            </div>
+
+        </div>
+    </div>
+</div>

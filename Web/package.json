@@ -1,0 +1,29 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@aspnet/signalr-client": "^1.0.0-alpha2-27376",
+    "@types/es6-promise": "0.0.33",
+    "@types/jquery": "^3.2.12",
+    "@types/knockout": "^3.4.45",
+    "bootstrap": "4.0.0-beta.2",
+    "bootswatch": "^4.0.0-alpha.6",
+    "highcharts": "^6.0.2",
+    "jquery": "^3.2.1",
+    "knockout": "^3.4.2",
+    "leaflet": "^1.2.0",
+    "nprogress": "^0.2.0",
+    "popper.js": "^1.12.6",
+    "sammy": "^0.7.6",
+    "tether": "^1.4.0",
+    "toastr": "^2.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,59 @@
+﻿@using System.Security.Principal
+
+<nav class="navbar navbar-expand-lg navbar-toggleable-md fixed-top navbar-inverse" role="navigation" id="navigation">
+    <a class="navbar-brand" data-bind="attr: { href: routes()[0].url }">Satkuseuranta</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <!-- ko foreach : publicMenuRoutes -->
+            <li class="nav-item" data-bind="css: { active: active }">
+                <a class="nav-link" data-bind="attr: { href: url }"><i data-bind="css: icon" class="fa fa-fw"></i> <span data-bind="text: text"></span></a>
+            </li>
+            <!-- /ko -->
+
+            @if (User.Identity.IsAuthenticated) 
+            {
+            <li class="dropdown nav-item ml-4">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="fa fa-wrench"></i> Hallinnoi <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" data-bind="foreach: adminMenuRoutes">
+                    <li class="dropdown-item" data-bind="css: { active: active }">
+                        <a class="nav-link" data-bind="attr: { href: url }"><i data-bind="css: icon" class="fa fa-fw"></i><span data-bind="text: text"></span></a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown nav-item ml-2">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="fa fa-fw fa-barcode"></i> Lue <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+
+                    <li class="dropdown-item">
+                        <a class="nav-link" data-bind="attr: { href:  Ksx.Routes.url('scanlog') }">
+                            <i class="fa fa-fw fa-list-ol"></i> Avaa loki
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="nav-link" target="_blank" rel="external" data-bind="attr: { href: '/api/' +  Ksx.Routes.currentHappening + '/datafilequery' }">
+                            <i class="fa fa-fw fa-cloud-download"></i> Lataa data exceliin
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li class="dropdown-item">
+                        <a class="nav-link" data-bind="attr: { href:  Ksx.Routes.url('scaninstructions') }">
+                            <i class="fa fa-fw fa-info-sign"></i> Ohjeet
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            } 
+        </ul>
+
+        @await Html.PartialAsync("_LoginPartial")
+    
+    </div>
+</nav>

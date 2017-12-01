@@ -1,0 +1,106 @@
+﻿@model List<Web.QueryModels.DashboardAttendee>
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Osallistujien viivakoodit</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+            ul li {
+                margin-bottom: 20px;
+                width: 470px;
+                float: left;
+            }
+
+        img {
+            border: none;
+            width: 320px;
+            height: 180px;
+        }
+
+        label {
+            font-family: Verdana;
+            font-weight: bold;
+            font-size: 1.5em;
+            display: block;
+            width: 320px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        input[type=search] {
+            width: 300px;
+            height: 30px;
+            font-size: 16px;
+        }
+    </style>
+    <style media="print">
+        #instructions, #filter, input {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul li {
+            width: 330px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p id="instructions">
+            Tällä sivulla on kaikkien osallistujien viivakoodit. Huomaa, että jos haluat lukea suoraan
+            tältä sivulta viivakoodin satkuserverille, pitää satkuserverin selainikkunan olla aktiivinen
+            (l. päällimmäisenä).
+            On siis turvallisempaa tulostaa sivu etukäteen mukaan, mutta jos tiedät mitä teet niin
+            tätä sivua saa käyttää suoraan.
+        </p>
+        <input type="search" id="filter" name="filter" placeholder="Filtteröi nimellä" autofocus />
+        <ul id="barcodes">
+            @foreach (var a in Model)
+            {
+                <li title="@a.Name">
+                    <label for="@a.PersonId">@a.Person.Lastname</label>
+                    @Html.Partial("_Barcode", a.PersonId)
+                </li>
+            }
+        </ul>
+    </div>
+    <script>
+        (function () {
+            var all = document.querySelectorAll("ul#barcodes li"),
+                searchField = document.getElementById("filter");
+
+            function filter(e) {
+                var term = e.target.value,
+                    findRegex,
+                    i,
+                    item;
+
+                findRegex = new RegExp(".*" + term + ".*", "i");
+
+                for (i = 0; i < all.length; ++i) {
+                    item = all[i];
+                    item.style.display = findRegex.test(item.title) ? "block" : "none";
+                }
+            }
+
+            searchField.addEventListener("keyup", filter);
+
+            // This covers e.g. clearing the input with (x) click on most browsers
+            // Unfortunately does not work on IE 10 when the (x) is clicked, but
+            // works when ESC key is used
+            searchField.addEventListener("search", filter);
+        }());
+    </script>
+</body>
+</html>

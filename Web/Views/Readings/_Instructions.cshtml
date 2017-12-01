@@ -1,0 +1,109 @@
+﻿@model dynamic
+<spa-view name="scaninstructions">
+    <h1>Luentaohjeet</h1>
+    <a target="_blank" data-bind="attr: { href: '/barcodes/' + Ksx.Routes.currentHappening}">Avaa kävelijöiden viivakoodit.</a>
+    <p>
+        Kun satkusivut ovat auki ja ylälaidassa lukee "Lue", voit lukea normaalisti viivakoodinlukijalla.
+        Lukemat ja mahdolliset virheet tulevat hetkeksi näkyviin sivun alalaitaan. Tarkempi omien lukemien loki
+        aukeaa valikosta klikkaamalla "Avaa loki". 
+        Huomaa, että sivun pitää olla päällimmäisenä jotta sivu saa viivakoodinlukijan tiedot. Voit kokeilla lukijan toimivuutta tällä
+        testiviivakoodilla (voit lukea suoraan tältä sivulta):
+    </p>
+    <div class="mt-3 mb-4">@Html.Partial("_Barcode", "A1234567")</div>
+    <h4>
+        Sivuston realiaikaisuus
+    </h4>
+    <p>
+        Sivut on tehty niin, että kaikkien huoltajien tekemät toimet synkronoituvat heti kaikille
+        sivustolla olijoille. Toisin sanoen, kun joku lukee henkilön sisään, siirtyy tämä tieto
+        lähes reaaliaikaisesti kaikille muille huoltajille (ja seuraajille). Tällaista synkronointia
+        ei voi koskaan tehdä täydellisesti koska verkkoyhteydet ovat mitä ovat... Tämän vuoksi,
+        lataa koko sivusto uudelleen (eli ihan normaali selaimen reload/refresh) aina ennen
+        kuin alat lukemaan uudella huoltopisteellä kävelijöitä sisään. Ei ole pahitteeksi ladata
+        sivustoa muutenkaan esim. puolen tunnin välein. Tämä on tärkeää, koska luettaessa
+        huoltopiste päätellään automaattisesti jo tehdyistä lukemista, ja jos selaimessa ei
+        ole viimeisintä tietoa voi tämä mennä pieleen.
+    </p>
+    <p>
+        Toistaiseksi uudelleenlataus kannattaa tehdä etusivulla, koska kaikki huoltajien 
+        sivut eivät tue uudelleenlatausta ja lopputuloksena voi olla "Sivua ei löydy". Tähän 
+        on syynsä (jota kenenkään ei tarvitse onneksi ymmärtää).
+    </p>
+    
+    <h4>
+        Lukemien muokkaus ja käsin lisääminen
+    </h4>
+
+    <p>
+        Jos huomaat lukemisen unohtuneen, tai jokin on muuten vain mennyt pieleen, on käytössä
+        kattavat muokkausmahdollisuudet: voit lisätä lukemia, poistaa niitä, siirtää kellonaikaa, ja
+        keskeyttää kävelysuorituksia.
+    </p>
+    <dl>
+        <dt>Lisäys</dt>
+        <dd>Avaa huoltopiste, ja valitse "Lisää lukema". Huomaa, että lukemien lisäys luottaa
+            vain palvelinpäässä laskettavaan "huoltopisteelle odotetaan"-tietoon; tämän vuoksi ennen
+            lukeman lisäystä käsin kannattaa päivittää sivusto (reload/refresh).</dd>
+        <dt>Lukeman poisto</dt>
+        <dd>Valitse lukema (jos kaikki jo luettu, näkyy erikseen avautuvassa lukemalistassa, muuten
+            etusivulla huoltopisteen alla), valitse valikosta "Poista lukema". Aina vain viimeinen lukema
+            poistuu, ts. jos henkilö on luettu sisään ja ulos ja poistetaan lukema, poistetaan uloslukema.
+            Seuraava poisto poistaa sisäänluvun. Huomaa, että järjestelmä antaa toistaiseksi poistaa lukemia
+            myös ns. "välistä", ole siis huolellinen että poistat vain viimeisiä lukemia jos niitä pitää jostain
+        syystä poistaa.</dd>
+        <dt>Ajan siirto</dt>
+        <dd>Lukeman ajan siirto onnistuu samasta valikosta kuin muutkin lukematoiminnot (k. esim. "Lukeman poisto").
+            Valitse "Siirrä lukeman aikaa", anna uusi kellonaika ja hyväksy. </dd>
+        <dt>Keskeytä kävely</dt>
+        <dd>Kävelyn keskeytetään viimeisellä luetulla huoltopisteellä. Tämän vuoksi keskeytys on samassa
+            valikossa kuin muutkin lukematoiminnot. Jos kävely keskeytetään ulosluvun jälkeen, kysytään
+            huoltopisteen jälkeen kävellyt kilometrit. Jos kävely keskeytetään sisäänluvun jälkeen, ei kilometrejä
+            kysytä koska tällöin kävelijä on keskeyttänyt huoltopisteellä eikä huoltopisteiden välillä.</dd>
+    </dl>
+    <p>
+        Älä hämmenny, jos lisäämäsi tai muokkaamasi lukeman tallentunut kellonaika eroaa vähän oman 
+        tietokoneesi kellosta: sivusto käyttää kaikissa toiminnoissa palvelimen aikaa, ja se voi 
+        vähän erota oman läppärisi ajasta. Esim. jos syötät kellonajaksi 7.57, saattaa järjestelmään 
+        tallentua 7.55; tämä johtuu siitä, että koneesi kello on pari minuuttia "väärässä" ajassa. 
+        Yleensä ero on vain sekunteja, eikä sitä huomaa. Hyvä käytäntö on aina pitää koneensa virallisessa 
+        ajassa ns.
+        <a href="http://www.guidingtech.com/3119/windows-clock-sync/" title="ohjeet aikapalvelimen asettamiseen">aikapalvelimien avulla</a>, 
+        vaikkei satkuserveri sitä enää vaadi ei siitä haittaakaan ole.</p>
+    <h4>
+        Jos sama henkilö luetaan tarkoituksella tai vahingossa moneen kertaan tapahtuu seuraavaa:
+    </h4>
+    <dl>
+        <dt>Luennat tehdään 10 s sisään</dt>
+        <dd>
+            Ensimmäinen jää voimaan. Kymmenen sekunnin säännöllä estetetään henkilön
+            lukeminen vahingossa huoltopaikalta ulos heti sisäänluvun yhteydessä.
+        </dd>
+        <dt>Luentojen väli on yli 10 s huoltopaikalla (ei lähtö tai maali)</dt>
+        <dd>Ensimmäinen luenta on sisäänluku, toinen ulosluku</dd>
+        <dt>Luentojen väli on yli 10 s lähdössä tai maalissa</dt>
+        <dd>Ensimmäinen luenta jää voimaan.</dd>
+    </dl>
+    <p>
+        Huomaa, että jos tietokoneesi ei ole verkossa tai verkko toimii huonosti, luetaan viestit
+        selaimen välivarastoon ja seuraavan kerran kun avaat tämän sivun siirretään ne automaattisesti
+        palvelimelle. Sivulla näkyy lista siirtämättömistä lukemisista.
+    </p>
+    @*<p>
+        Jos tietokoneessasi on äänet päällä, kuulet jokaisen lukeman jälkeen vahvistuksen onnistumisesta,
+        ja lisäksi luetun henkilön nimen.
+    </p>*@
+    <h4>Aloituslukeman lisääminen</h4>
+    <p>
+        Kun kävelijät lähtevät liikkeelle, jokaiselle lisätään täsmälleen samalle ajanhetkelle ns. aloituslukema. 
+        Tämä toiminto löytyy etusivulta ensimmäisen huoltopisteen kohdalta. Huolehdi, että oikeat henkilöt on 
+        sidottu tapahtumaan ennen kuin lisäät aloituslukeman - ensimmäisen lukeman jälkeen osa toiminnoista 
+        poistuu käytöstä. 
+    </p>
+    
+    <p>
+        <a href="/" class="btn btn-primary">
+            <i class="fa fa-inverse fa-check"></i> Takaisin etusivulle
+        </a>
+    </p>
+    
+</spa-view>

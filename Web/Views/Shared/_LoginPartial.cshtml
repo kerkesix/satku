@@ -1,0 +1,21 @@
+@using System.Security.Principal
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="navbar-nav navbar-right dropdown">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            @User.Identity.Name <b class="caret"></b>
+        </a>
+        <ul class="nav-item dropdown-menu">
+            <li class="dropdown-item">
+                <i class="fa fa-sign-out"></i> <a asp-area="" asp-controller="Account" asp-action="SignOut"> Kirjaudu ulos</a>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    <ul class="navbar-nav navbar-right">
+        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="Signin"><i class="fa fa-lock"></i> Kirjaudu (jäsenille)</a></li>
+    </ul>
+}

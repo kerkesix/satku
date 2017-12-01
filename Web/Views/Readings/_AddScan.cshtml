@@ -1,0 +1,66 @@
+﻿@model dynamic
+<div id="addScanIn" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Lisää lukema sisään</h4>
+            </div>
+
+            <div class="modal-body">                
+                <form data-bind="submit: addManualScanIn.bind($data)">
+                    <div class="form-group">
+                        <label for="newManualScanAttendee">
+                            Valitse kävelijä
+                        </label>
+                        <select id="newManualScanAttendee" required class="form-control"
+                                data-bind="options: waitingFor, value: selectedNewScanAttendee, optionsText: function (item) { return Ksx.ReferenceData.attendeesMap[item.id]; }, optionsCaption: 'Valitse henkilö...'"></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Päivämäärä muodossa pp.kk.vvvv</label>
+                        <input type="text" class="form-control" style="width: 100px;" placeholder="pp.kk.vvvv" required="required" name="date"
+                               title="Anna päivämäärä muodossa pp.kk.vvvv" pattern="\d{1,2}[.]\d{1,2}[.]\d{4}" data-bind="value: newManualScanDate" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Aika mmuodossa tt.mm</label>
+                        <input type="text" class="form-control" style="width: 100px;" placeholder="tt.mm" required="required" name="time" 
+                               title="Anna aika muodossa tt.mm" pattern="\d{1,2}[.:]\d{1,2}" data-bind="value: newManualScanTime" />
+                    </div>
+
+                    <p>
+                        <button type="submit" class="btn btn-primary" style="margin-right: 10px;">Lisää</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addScanOut" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Lisää lukema ulos</h4>
+            </div>
+
+            <div class="modal-body">
+                <form data-bind="submit: addManualScanOut.bind($data)">
+                    <div class="form-group">
+                        <label for="time">Aika mmuodossa tt.mm</label>
+                        <input type="text" class="form-control" style="width: 100px;" placeholder="tt.mm" required="required" name="time"
+                               title="Anna aika muodossa tt.mm" pattern="\d{1,2}[.:]\d{1,2}" data-bind="value: newManualScanTime" />
+                    </div>
+
+                    <p>
+                        <button type="submit" class="btn btn-primary" style="margin-right: 10px;">Lisää</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

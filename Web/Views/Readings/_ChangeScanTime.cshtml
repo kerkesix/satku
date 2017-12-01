@@ -1,0 +1,40 @@
+﻿@model dynamic
+<div id="changescantime" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>
+                    <i class="fa fa-time fa-2x"></i>
+                    Siirrä lukeman aikaa
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div data-bind="visible: !visitTimeToChange()">
+                    <button data-bind="click: visitTimeToChange.bind($data, 'In')" class="btn btn-default">Siirrä sisäänlukuaikaa</button>
+                    <button data-bind="click: visitTimeToChange.bind($data, 'Out')" class="btn btn-default">Siirrä uloslukuaikaa</button>
+                </div>
+                <div data-bind="visible: visitTimeToChange()">
+                    <div class="form-group">
+                        <label for="date">Päivämäärä muodossa pp.kk.vvvv</label>
+                        <input type="text" class="form-control" style="width: 100px;" placeholder="pp.kk.vvvv" required="required" name="date"
+                               title="Anna päivämäärä muodossa pp.kk.vvvv" pattern="\d{1,2}[.]\d{1,2}[.]\d{4}" data-bind="value: changeScanTimeDate" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Aika mmuodossa tt.mm</label>
+                        <input type="text" class="form-control" style="width: 100px;" placeholder="tt.mm" required="required" name="time"
+                               title="Anna aika muodossa tt.mm" pattern="\d{1,2}[.:]\d{1,2}" data-bind="value: changeScanTimeTime" />
+                    </div>                    
+                </div>
+            </div>
+            
+            @*TODO: Harmonize all modal buttons: pull right or left, button ordering*@
+            <div class="modal-footer" data-bind="visible: visitTimeToChange">
+                <button type="button" class="btn btn-primary" data-bind="click: changeScanTime.bind($data)">Siirrä</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
+            </div>
+        </div>
+    </div>
+</div>

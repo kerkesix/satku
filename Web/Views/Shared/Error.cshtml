@@ -1,0 +1,16 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+    Layout = "_LayoutError.cshtml";
+}
+
+<h1 class="text-danger">Ooops! Virhe</h1>
+<h2 class="text-danger">Eipä siinä paljon muuta sanottavaa ole... joku meni pieleen. Joku on mokannut. Joku saa kenkää.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+

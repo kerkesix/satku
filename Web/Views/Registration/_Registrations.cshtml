@@ -1,0 +1,85 @@
+﻿@model dynamic
+<spa-view name="registrations">
+    <h1>Ilmoittautuneet (<!--ko text: rows().length --><!--/ko--> kpl)</h1>
+    <h4 data-bind="text: Ksx.Routes.currentHappening"></h4>
+
+    <ul class="list-inline">
+        <li>Näyttönimi suluissa jos eri kuin oikea nimi.</li>
+        <li><i class="fa fa-key"></i> Jäsen</li>
+        <li><i class="fa fa-repeat"></i> Ollut aiemmin</li>
+    </ul>
+
+    <article data-bind="foreach: rows">
+        <div class="row">
+            <div class="col-md-7">
+                <h5>
+                    <i class="fa fa-key" data-bind="visible: isMember"></i>
+                    <i class="fa fa-repeat" data-bind="visible: beenThere"></i>
+                    <!--ko text: showName() --><!--/ko--> 
+                </h5>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-3">Ilmo: </div>
+                            <div class="col-md-9" data-bind="dateText: time, dateFormat: 'full'"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Vahv: </div>
+                            <div class="col-md-9" data-bind="dateText: confirmedAt, dateFormat: 'full'"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div data-bind="text: email"></div>
+                        <div data-bind="text: phone"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" data-bind="text: info"></div>
+                </div>                
+            </div>
+            <div class="col-md-5" style="padding-top: 33px;">
+                <i class="fa fa-long-arrow-right "></i>
+                <strong data-bind="text: linkedToPerson"></strong>
+                
+                <select data-bind="visible: !linkedToPerson() && confirmedAt(), options: availablePeople, optionsCaption: 'Luo uusi henkilö', value: selectedPerson, optionsText: function (item) { return item.Name; }"></select>
+                &nbsp;
+                <button data-bind="visible: !linkedToPerson() && confirmedAt(), click: link.bind($data)" class="btn btn-default btn-sm">
+                    <i class="fa fa-link"></i> Sido
+                </button>
+                &nbsp;
+                <button data-bind="visible: !linkedToPerson(), modal: '#popupRemoveRegistration'" class="btn btn-sm">
+                    <i class="fa fa-trash"></i>
+                </button>
+                
+                <button data-bind="visible: linkedToPerson, click: unlink.bind($data)" class="btn btn-sm">
+                    <i class="fa fa-unlink"></i> Poista linkitys
+                </button>
+            </div>
+        </div>
+    </article>
+</spa-view>
+
+<div id="popupRemoveRegistration" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 data-bind="text: 'Poista rekisteröinti: ' + showName()"></h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Haluatko varmasti poistaa rekisteröinnin? Jos rekisteröintiä ei ole 
+                    vahvistettu (l. meililinkkiä ei ole klikattu), se poistetaan kokonaan. 
+                    Muussa tapauksessa se merkataan poistetuksi, eli rekisteröinnin voi vielä pelastaa. 
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bind="click: $root.remove.bind($root)">
+                    <i class="fa fa-trash"></i>&nbsp;Poista
+                </button>
+                <button type="button" class="btn" data-dismiss="modal">Peru</button>
+            </div>
+        </div>
+    </div>
+</div>

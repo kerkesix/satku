@@ -1,0 +1,32 @@
+﻿@using System.Security.Principal
+@model dynamic
+<script>
+    var Globals = {
+        Page: '@ViewData["Page"]',
+        Happening: '@ViewData["Happening"]',
+        DefaultHappening: '@ViewData["DefaultHappening"]',
+        Role: '@(User.Identity.IsAuthenticated ? "contributor" : "")'
+    };
+</script>
+
+@Html.Partial("~/Views/Report/_SummaryReport.cshtml")
+@Html.Partial("~/Views/Attendees/_Attendees.cshtml")
+@Html.Partial("~/Views/Route/_Route.cshtml")
+@Html.Partial("~/Views/About/_About.cshtml")
+@Html.Partial("~/Views/Shared/_404NotFound.cshtml")
+
+@if (User.Identity.IsAuthenticated)
+{
+@Html.Partial("~/Views/Happening/_EditHappenings.cshtml")
+@Html.Partial("~/Views/Registration/_Registrations.cshtml")
+@Html.Partial("~/Views/People/_People.cshtml")
+@Html.Partial("~/Views/Readings/_Instructions.cshtml")
+@Html.Partial("~/Views/Readings/_Scan.cshtml")
+@Html.Partial("~/Views/Readings/_StartScan.cshtml")
+@Html.Partial("~/Views/Readings/_AddScan.cshtml")
+@Html.Partial("~/Views/Readings/_RemoveScan.cshtml")
+@Html.Partial("~/Views/Readings/_ChangeScanTime.cshtml")
+@Html.Partial("~/Views/Readings/_AddQuit.cshtml")
+@Html.Partial("~/Views/Readings/_RemoveQuit.cshtml")
+@Html.Partial("~/Views/System/_System.cshtml")
+}

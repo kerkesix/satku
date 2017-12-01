@@ -1,0 +1,18 @@
+﻿{
+    Happening: "satkuxii",
+	IsDefault: true,
+    Checkpoints:
+    [
+        { Id: '7e3b49dd-9fd9-4ebe-a007-156ba2d4b23b', CheckpointType: 0, Name: 'Crossfit8000', DistanceFromPrevious: 0, DistanceFromStart: 0, Latitude: 60.15821252, Longitude: 24.64103193, Timestamp: '2013-10-03T14:47:00.000+00:00' },
+        { Id: '8a1e18e2-1515-4212-ab08-e152b579fb86', CheckpointType: 1, Name: 'Hölmölä', DistanceFromPrevious: 12.5, DistanceFromStart: 12.5, Latitude: 60.22240049, Longitude: 24.66906949, Timestamp: '2013-10-03T14:47:01.000+00:00' },
+        { Id: 'a600e89d-c45a-495d-8dc6-1b79bbe3e60e', CheckpointType: 1, Name: 'Gunnar', DistanceFromPrevious: 9.1, DistanceFromStart: 21.6, Latitude: 60.27336509, Longitude: 24.65601979, Timestamp: '2013-10-03T14:47:02.000+00:00' },
+        { Id: 'c5ff45ff-f4eb-40c3-83ca-ac3143302413', CheckpointType: 1, Name: 'Near Lepsaemae', DistanceFromPrevious: 14.3, DistanceFromStart: 35.9, Latitude: 60.38904217, Longitude: 24.64509645, Timestamp: '2013-10-03T14:47:03.000+00:00' },
+        { Id: 'f98cf31d-ab03-4cbf-aec1-678a31179c14', CheckpointType: 1, Name: 'Puliväli', DistanceFromPrevious: 14.2, DistanceFromStart: 50.1, Latitude: 60.41099882, Longitude: 24.45092498, Timestamp: '2013-10-03T14:47:04.000+00:00' },
+        { Id: '081e1557-bb91-4ac4-a6cb-ce186a713e3d', CheckpointType: 2, Name: 'Vihdinnurkka', DistanceFromPrevious: 5.8, DistanceFromStart: 55.9, Latitude: 60.41959515, Longitude: 24.35091283, Timestamp: '2013-10-03T14:47:05.000+00:00' },
+        { Id: 'f02b07b1-c6e4-478e-9d52-cc0da0353b21', CheckpointType: 1, Name: 'Hyvinkää40', DistanceFromPrevious: 6.5, DistanceFromStart: 62.4, Latitude: 60.38110908, Longitude: 24.41086882, Timestamp: '2013-10-03T14:47:06.000+00:00' },
+        { Id: 'fa7d1856-ea6d-4026-b53e-21f31184042e', CheckpointType: 1, Name: 'Kurjoo', DistanceFromPrevious: 10.4, DistanceFromStart: 72.8, Latitude: 60.30998518, Longitude: 24.4027159, Timestamp: '2013-10-03T14:47:07.000+00:00' },
+        { Id: '96d635aa-10e1-48e6-a013-0d49962d233e', CheckpointType: 1, Name: 'Veikkola bainait', DistanceFromPrevious: 7.6, DistanceFromStart: 80.4, Latitude: 60.26982749, Longitude: 24.44138046, Timestamp: '2013-10-03T14:47:08.000+00:00' },
+        { Id: '5c445d7b-a308-4493-9f07-94fb36f2b9c4', CheckpointType: 1, Name: 'Vikatauko', DistanceFromPrevious: 11.9, DistanceFromStart: 92.3, Latitude: 60.19956372, Longitude: 24.55436742, Timestamp: '2013-10-03T14:47:09.000+00:00' },
+        { Id: 'e8fe9ff3-e1c5-4e79-b152-30e8c7093bef', CheckpointType: 3, Name: 'Crossfit8000', DistanceFromPrevious: 7.7, DistanceFromStart: 100, Latitude: 60.15821252, Longitude: 24.64103193, Timestamp: '2013-10-03T14:47:10.000+00:00' }
+    ]
+}

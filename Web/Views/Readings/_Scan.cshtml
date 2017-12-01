@@ -1,0 +1,40 @@
+﻿@model dynamic
+<spa-view name="scan">
+
+    <h1>Luentaloki</h1>
+    <p>Loki tyhjenee aina kun koko sivusto ladataan uudelleen (reload/refresh).</p>
+    <ul class="list-inline">
+        <li>
+            <i class="fa fa-upload-alt"></i> Luettu, odottaa siirtoa
+        </li>
+        <li>
+            <i class="fa fa-spinner"></i> Siirretty palvelimelle, odottaa käsittelyä
+        </li>
+        <li>
+            <i class="fa fa-check"></i> Käsitelty, ok
+        </li>
+        <li>
+            <i class="fa fa-warning-sign"></i> Käsitelty, virhe
+        </li>
+
+    </ul>
+    <hr/>
+    <ul class="list-unstyled" data-bind="foreach: rows">
+        <li>
+            <i data-bind="visible: status() === 'new'" class="fa fa-upload-alt"></i>
+            <i data-bind="visible: status() === 'ack'" class="fa fa-spinner"></i>
+            <i data-bind="visible: status() === 'ok'" class="fa fa-check"></i>
+            <i data-bind="visible: status() === 'error'" class="fa fa-warning-sign"></i>
+            <span data-bind="dateText: timestamp"></span> <!--ko text: Ksx.ReferenceData.attendeesMap[person] --><!--/ko-->
+            <span data-bind="visible: text(), text: ' - ' + text()"></span>
+            <span data-bind="visible: error(), text: error" class="label label-danger"></span>
+        </li>
+    </ul>
+    
+    <div data-bind="visible: !windowActive()" class="alert alert-warning" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 9999;" >
+        <strong>
+            Ikkuna ei ole aktiivinen, lukeminen ei juuri nyt onnistu
+        </strong> 
+    </div>
+
+</spa-view>

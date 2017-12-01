@@ -1,0 +1,148 @@
+﻿// Configure bundling and minification for the project.
+// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+  {
+    "outputFileName": "wwwroot/build/lib.css",
+    "inputFiles": [
+      "node_modules/bootswatch/cyborg/bootstrap.css",
+      "node_modules/toastr/build/toastr.css",
+      "node_modules/nprogress/nprogress.css",
+      "node_modules/leaflet/dist/leaflet.css"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },  
+  {
+    "outputFileName": "wwwroot/build/lib.js",
+    "inputFiles": [
+      "node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5.js",
+      "node_modules/popper.js/dist/umd/popper.js",
+      "node_modules/tether/dist/js/tether.js",
+      "node_modules/bootstrap/dist/js/bootstrap.js",
+      "node_modules/sammy/lib/sammy.js",
+      "node_modules/sammy/lib/plugins/sammy.title.js",
+      "node_modules/highcharts/highcharts.js",
+      "node_modules/toastr/toastr.js",
+      "node_modules/nprogress/nprogress.js",
+      "node_modules/leaflet/dist/leaflet.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },  
+  {
+    "outputFileName": "wwwroot/build/jquery.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },  
+  {
+    "outputFileName": "wwwroot/build/jquery.min.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.min.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },  
+  {
+    "outputFileName": "wwwroot/build/knockout.js",
+    "inputFiles": [
+      "node_modules/knockout/build/output/knockout-latest.debug.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },  
+  {
+    "outputFileName": "wwwroot/build/knockout.min.js",
+    "inputFiles": [
+      "node_modules/knockout/build/output/knockout-latest.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },  
+  {
+    "outputFileName": "wwwroot/build/site.min.css",
+    "inputFiles": [
+      "wwwroot/build/lib.css",
+      "wwwroot/css/structure.css",
+      "wwwroot/css/print.css",
+      "wwwroot/css/site.css"  
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/build/contributor.min.js",
+    "includeInProject": false,
+    "inputFiles": [
+      "wwwroot/js/ViewModels/Barcode.js",
+      "wwwroot/js/ViewModels/Beep.js",
+      "wwwroot/js/ViewModels/ScanInstructionsViewModel.js",
+      "wwwroot/js/ViewModels/ScanValidator.js",
+      "wwwroot/js/ViewModels/ScanViewModel.js",
+      "wwwroot/js/ViewModels/StartScanViewModel.js",
+
+      "wwwroot/js/ViewModels/EditHappeningsViewModel.js",
+      "wwwroot/js/ViewModels/LinkPerson.js",
+      "wwwroot/js/ViewModels/RegistrationRow.js",
+      "wwwroot/js/ViewModels/RegistrationsViewModel.js",
+      "wwwroot/js/ViewModels/PeopleViewModel.js",
+      "wwwroot/js/ViewModels/SystemViewModel.js"
+    ],
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/build/site.min.js",
+    "includeInProject": false,
+    "inputFiles": [
+      "wwwroot/build/lib.js",
+      "wwwroot/js/Ksx.Track.js",
+      "wwwroot/js/sammy.track.js",
+      "wwwroot/js/Ksx.Time.js",
+      "wwwroot/js/Highcharts/Themes/cyborg.js",
+      "wwwroot/js/Messaging/jquery.topic.js",
+      "wwwroot/js/Messaging/Queues.js",
+      "wwwroot/js/Messaging/notifications.js",
+      "wwwroot/js/Messaging/EventsToNotifications.js",
+      "wwwroot/js/Bindings/dateText.js",
+      "wwwroot/js/Bindings/durationText.js",
+      "wwwroot/js/Bindings/numberText.js",
+      "wwwroot/js/Bindings/map.js",
+      "wwwroot/js/Bindings/modal.js",
+      "wwwroot/js/Ksx.Routes.js",
+      "wwwroot/js/Ksx.Mutator.js",
+      "wwwroot/js/JSBus/LocalStorageStore.js",
+      "wwwroot/js/JSBus/LocalStorageQueue.js",
+      "wwwroot/js/JSBus/Bus.js",
+      "wwwroot/js/JSBus/SignalRSendTransport.js",
+      "wwwroot/js/JSBus/SignalRSubscribeTransport.js",
+      "wwwroot/js/Ksx.Bus.js",            
+      "wwwroot/js/ViewModelBase.js",
+      "wwwroot/js/DataClient.js",
+      "wwwroot/js/ViewModels/ReferenceData.js",
+      "wwwroot/js/ViewModels/AboutViewModel.js",
+      "wwwroot/js/ViewModels/attendeeGraph.js",
+      "wwwroot/js/ViewModels/AttendeesViewModel.js",
+      "wwwroot/js/ViewModels/report.graph.js",
+      "wwwroot/js/ViewModels/report.graph.koBinding.js",
+      "wwwroot/js/ViewModels/report.graph.checkpoints.js",
+      "wwwroot/js/ViewModels/report.graph.status.js",
+      "wwwroot/js/ViewModels/report.graph.destruction.js",
+      "wwwroot/js/ViewModels/Dtos.js",
+      "wwwroot/js/ViewModels/Visit.js",
+      "wwwroot/js/ViewModels/Quitter.js",
+      "wwwroot/js/ViewModels/Expected.js",
+      "wwwroot/js/ViewModels/Attendee.js",
+      "wwwroot/js/ViewModels/Checkpoint.js",
+      "wwwroot/js/ViewModels/ReportViewModel.js",
+      "wwwroot/js/ViewModels/RouteViewModel.js",
+      "wwwroot/js/ViewModels/NavigationViewModel.js"
+    ],
+    "sourceMap": true
+  }
+]

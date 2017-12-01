@@ -1,0 +1,18 @@
+﻿@model dynamic
+<spa-view name="system">
+    <h1>Käynnistä järjestelmä uudelleen</h1>
+    
+    <p>Järjestelmä on taustalla asynkroninen, ts. ruudulla näytettävä tieto päivittyy 
+        aina irrallaan muutostapahtumista. Tällöin on ohjelmointivirheen vuoksi mahdollista, 
+        että lukupuoli on epäsynkassa. Voit pakkottaa lukupuolen päivittymään alla olevalla 
+        napilla. Tämä käynnistää www-palvelun uudelleen; tämä voi siis vaikuttaa käyttäjiin, 
+        koska uudelleenkäynnistys kestää jopa kymmeniä sekunteja.</p>
+
+    <div>
+        <button class="btn btn-danger btn-large" data-bind="click: refresh">
+            <i class="fa fa-exclamation-sign fa-2x"></i>&nbsp;
+            Käynnistä uudelleen (tiedäthän mitä teet?)
+        </button>
+    </div>
+    </div>
+</spa-view>

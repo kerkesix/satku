@@ -1,0 +1,120 @@
+﻿@model dynamic
+<spa-view name="attendees">
+
+    <div class="jumbotron" style="display: none;" data-bind="visible: !attendees().length">
+        <h1>Tyhjää täynnä</h1>
+        <h4>
+            Yhtään kävelijää ei ole vielä lisätty tähän satkuun.
+        </h4>
+        <p>
+            Yleensä kävelijät lisätään noin viikkoa ennen tapahtumaa, joten odota kärsivällisesti ja palaa pian.
+        </p>
+        <a href="/" class="btn btn-primary btn-lg">Takaisin etusivulle</a>
+    </div>
+
+    <div style="display: none;" data-bind="visible: attendees().length">
+        <article data-bind="ifnot: $root.selected">
+            <h3>Valitse kävelijä listasta</h3>
+            <p>
+                Listassa on kaikki kävelemään lähteneet kävelijät. Voit hakea kävelijää listan yläpuolella olevan hakukentän avulla.
+            </p>
+            @if (User.Identity.IsAuthenticated)
+            {
+            <p>
+                <a target="_blank" data-bind="attr: { href: '/barcodes/' + Ksx.Routes.currentHappening}">Tulosta kävelijöiden viivakoodit</a>
+            </p>
+            }
+
+            
+            <form data-bind="submit: $root.filterSubmit, submitBubble: false" role="form">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <input class="form-control" type="search" data-bind="value: filterText, valueUpdate: 'afterkeydown'" placeholder="Hae kävelijää...">
+                </div>
+            </form>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 20px"></th>
+                        <th>Nimi</th>
+                        <th>Kävellyt</th>
+                        <th>Vauhti</th>
+                        <th>Huoltanut</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: attendees">
+                    <tr class="" data-bind="visible: !filtered()">
+                        <td><i class="fa fa-inverse fa-ambulance" data-bind="visible: hasQuit"></i></td>
+                        <td><a data-bind="attr: { href: url }"><!--ko text: name --><!--/ko--></a></td>
+                        <td data-bind="numberText: walkedKilometres"></td>
+                        <td data-bind="numberText: avgSpeed"></td>
+                        <td data-bind="durationText: totalRestTime"></td>
+                    </tr>
+                </tbody>
+            </table>        
+        </article>
+
+        <article data-bind="if: $root.selected">
+            <select id="attendee-dropdownnav" class="form-control-lg clearfix mb-3 hidden-print w-100"
+                    data-bind="options: attendees, optionsCaption: 'Valitse kävelijä...', value: selected, optionsText: function (item) { return item.name + (item.hasQuit ? ' (keskeyttänyt)' : ''); }"></select>
+
+            <div data-bind="with: $root.selected">
+                <header>
+                    <div>
+                        <!-- <img id="gravatar" style="width: 80px; height: 80px;"
+                                data-bind="attr: { src: '//www.gravatar.com/avatar/' + gravatarHash() + '.jpg?s=80&d=blank' }"
+                                alt="Kävelijän omakuva" class="img-rounded pull-right" /> -->
+                        <div class="media-body">
+                            <h2 data-bind="text: name" class="visible-print-block"></h2>
+                            <h5 data-bind="visible: phone">
+                                <abbr title="Phone">p.</abbr> <i itemprop="telephone" data-bind="text: phone"></i>
+                            </h5>
+                        </div>
+
+                    </div>
+
+                    <h5 class="visible-xs">
+                        <abbr title="Phone" data-bind="visible: phone">p.</abbr> <i itemprop="telephone" data-bind="text: phone"></i>
+                    </h5>
+
+                    <div class="alert alert-info" data-bind="visible: hasQuit">
+                        <i class="fa fa-inverse fa-ambulance fa-2x mr-2"></i>
+                        <strong>Kävelijä on tuhoutunut!</strong> Lopullinen notkahdus tapahtui <!--ko text: quitText--><!--/ko-->
+                    </div>
+
+                    <div class="row">
+                        <h6 class="col-12 col-md-6 col-xl-4" data-bind="visible: !hasQuit && destructionPercent()"><span class="badge badge-info py-2"><!--ko text: destructionPercent() --><!--/ko--> % Tuhoutumistodennäköisyys</span></h6>
+                        <h6 class="col-12 col-md-6 col-xl-4" data-bind="visible: visits().length"><span class="badge badge-primary py-2"><!--ko numberText: walkedKilometres --><!--/ko--> km matka</span></h6>
+                        <h6 class="col-12 col-md-6 col-xl-4" data-bind="visible: visits().length"><span class="badge badge-primary py-2"><!--ko numberText: avgSpeed --><!--/ko--> km/h vauhti</span></h6>
+                        <h6 class="col-12 col-md-6 col-xl-4"><span class="badge badge-primary py-2"><!--ko durationText: totalWalkingTime --><!--/ko--> kävelyaika</span></h6>
+                        <h6 class="col-12 col-md-6 col-xl-4"><span class="badge badge-primary py-2"><!--ko durationText: totalRestTime --><!--/ko--> huoltoaika</span></h6>
+                        <h6 class="col-12 col-md-6 col-xl-4"><span class="badge badge-primary py-2"><!--ko durationText: totalTime --><!--/ko--> kokonaisaika</span></h6>
+                    <div>
+                
+                </header>
+
+                <article data-bind="attendeeGraph: $root.checkpointNames" class="space"></article>
+
+                <table class="table table-condensed" data-bind="visible: visits().length">
+                    <thead>
+                        <tr>
+                            <th>Huoltopiste</th>
+                            <th>Sisään</th>
+                            <th>Ulos</th>
+                            @*<th>Lepoaika</th>*@
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: visits">
+                        <tr>
+                            <td data-bind="text: checkpointName"></td>
+                            <td data-bind="dateText: dateTimeIn"></td>
+                            <td data-bind="dateText: dateTimeOut"></td>
+                            @*<td ></td>*@
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </div>    
+</spa-view>

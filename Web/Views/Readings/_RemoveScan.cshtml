@@ -1,0 +1,20 @@
+﻿@model dynamic
+<div id="removeScan" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Poista lukema</h4>
+            </div>
+
+            <div class="modal-body">
+                Haluatko varmasti poistaa lukeman?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bind="click: removeScan.bind($data)">Poista</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
+            </div>
+        </div>
+    </div>
+</div>

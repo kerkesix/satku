@@ -1,0 +1,124 @@
+﻿@model KsxEventTracker.Registration.Models.RegistrationViewModel
+
+@{
+    ViewBag.Title = "Ilmoittaudu Sysimustalle Satkulle kävelijäksi";
+}
+
+<div class="well" style="max-width: 700px;">
+    <h1>Ilmoittaudu Sysimustalle Satkulle</h1>
+    <p>
+        Ilmoittautuminen on kaksivaiheinen:
+    </p>
+    <ol>
+        <li>Täytä ensin alla kysytyt perustiedot. Anna oikea nimesi ja toimiva sähköpostiosoite.</li>
+        <li>
+            Tietojen lähettämisen jälkeen saat sähköpostiviestin, jossa olevalla
+            linkillä vahvistat ilmoittautumisesi. Sinulle on varattu paikka vasta kun olet klikannut vahvistuslinkkiä.
+        </li>
+    </ol>
+    <p>
+        Voit ilmoittautua yhdellä sähköpostiosoitteella vain kerran.
+    </p>
+    @* s is the member override query parameter *@
+    @using (Html.BeginForm("Register", "Registration", new { s = (string)ViewBag.MemberOverride }))
+    {
+        @Html.ValidationSummary(false, "Syötetyissä tiedoissa oli virheitä, tarkista tiedot", new { @class = "alert alert-warning" })
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Firstname)
+            @Html.TextBoxFor(m => m.Firstname, new { required = "required", autofocus = "autofocus", @class = "form-control input-small", title = "Anna etunimesi" })
+            <div class="validation">@Html.ValidationMessageFor(m => m.Firstname)</div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Lastname)
+            @Html.TextBoxFor(m => m.Lastname, new { required = "required", @class = "form-control", title = "Anna sukunimesi" })
+            <div class="validation">@Html.ValidationMessageFor(m => m.Lastname) </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Nickname)
+            @Html.TextBoxFor(m => m.Nickname, new { required = "required", @class = "form-control", tabindex = "-1", title = "Anna satkuseurannassa näytettävä nimi" })
+            <div class="validation">@Html.ValidationMessageFor(m => m.Nickname) </div>
+            <span class="help-block">
+                Toivomme, että käytät omaa nimeäsi siinä muodossa kun se on esitäytetty,
+                mutta jos haluat pysyä tuntemattomana tai sinut tunnetaan paremmin lempinimelläsi voit vaihtaa
+                nimen. Nimen pitää olla yksilöllinen.
+            </span>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @type = "email", @class = "form-control", required = "required", title = "Anna toimiva sähköpostiosoite (tarkistetaan)." })
+            <div class="validation">@Html.ValidationMessageFor(m => m.Email) </div>
+            <span class="help-block">
+                Tätä osoitetta käytetään myös nk. <a href="https://fi.gravatar.com/" target="_blank">gravatar-kuvan</a>
+                hakemiseen, jolloin kuvasi näkyy Satkuseurannassa. Käy <a href="https://fi.gravatar.com/" target="_blank">rekisteröimässä</a> itsellesi kuva jos haluat.
+            </span>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Mobile)
+            @Html.TextBoxFor(m => m.Mobile, new { @type = "tel", @class = "form-control", required = "required", title = "Anna numero, josta sinut tavoittaa kävelyn aikana." })
+            <div class="validation">@Html.ValidationMessageFor(m => m.Mobile)</div>
+            <span class="help-block">Tätä numeroa tarvitaan kävelyn aikana. Numero tarkistetaan vielä paikan päällä ennen lähtöä.</span>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Info)
+            @Html.TextAreaFor(m => m.Info, new { @class = "form-control" })
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="beenThere" value="true" />
+                Olen ollut aiemmin satkulla
+            </label>
+        </div>
+
+        <div>
+            <button class="btn-primary btn-lg" type="submit"><i class="icon-large icon-ok"></i>Ilmoittaudu</button>
+            <a id="cancel" href="https://satku.kerkesix.fi">Huono idea, äkkiä pois</a>
+        </div>
+    }
+</div>
+
+@section head {
+    <style>
+        #cancel {
+            margin-left: 20px;
+        }
+    </style>
+}
+
+@section scripts
+    {
+    <script>
+        (function () {
+            var firstname = $("#Firstname"),
+                lastname = $("#Lastname"),
+                nickname = $("#Nickname"),
+                eventName = "blur";
+
+            function nameChanged() {
+                if (firstname.val().trim().length && lastname.val().trim().length) {
+                    nickname.val(lastname.val().trim() + ' ' + firstname.val().trim());
+                }
+            }
+
+            firstname.on(eventName, nameChanged);
+            lastname.on(eventName, nameChanged);
+
+            // If nickname is changed manually, disconnect the link
+            nickname.on("keyup paste", function (event) {
+                var key = event.keyCode || event.which;
+                if (key > 64) {
+                    firstname.off(eventName, nameChanged);
+                    lastname.off(eventName, nameChanged);
+                }
+            });
+        }());
+    </script>
+}
